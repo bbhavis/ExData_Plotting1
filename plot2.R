@@ -1,0 +1,10 @@
+library(dplyr)
+df <- data.frame(read.csv2("./hpc.txt", header=TRUE, sep=";", na.strings = "?"))
+df$Date <- as.Date(df$Date, "%d/%m/%Y")
+df1 <- filter(df, df$Date >= "2007-02-01" & df$Date < "2007-02-03")
+df1$DateTime <- strptime(paste(df1$Date, df1$Time), "%Y-%m-%d %H:%M:%S")
+df1$Global_active_power <- as.numeric(as.character(df1$Global_active_power))
+png(filename="plot2.png", width=480, height = 480, units="px")
+with(df1,  plot(df1$DateTime, df1$Global_active_power, type="l", ylab="Global Active Power (kilowatts)", xlab=""))
+dev.off()
+
